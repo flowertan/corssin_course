@@ -1,4 +1,4 @@
-import random,pygame,sys
+import random,pygame,sys, time
 from pygame.locals import *
 
 WINDOWWIDTH = 640
@@ -149,14 +149,71 @@ PIECES = {'S': S_SHAPE_TEMPLATE,
           'O': O_SHAPE_TEMPLATE,
           'T': T_SHAPE_TEMPLATE}
 
+def calculateLevelAndFallFreq(score):
+    level = int(score / 10) + 1
+    fallFreq = 0.27 - (level * 0.02)
+    return level, fallFreq
+def getNewPiece():
+    shape = random.choice(list(PIECES.keys()))
+    newPiece = {
+        'shape':shape,
+        'rotation': random.randint(0, len(PIECES[shape]) - 1),
+        'x':int(BOARDWIDTH / 2) - int(TEMPLATEWIDTH / 2),
+        'y':-2,
+        'color':random.randint(0, len(COLORS)-1)
+    }
+    return newPiece
+
+def addToBoard(board, piece):
+    for x in range(TEMPLATEWIDTH):
+        for y in range(TEMPLATEWIDTH):
+            if PIECES[piece['shape']][piece['rotation']][y][x] != BLANK:
+                board[x + piece['x']][y + piece['y']] = piece['color']
+
 def getBlankBoard():
     board = []
     for i in range(BOARDWIDTH):
         board.append([BLANK]*BOARDHEIGHT)
-    print(board)
     return board
+
+
 def isOnBoard(x,y):
     return x >= 0 and x < BOARDWIDTH and y < BOARDHEIGHT
+
+def isValidPosition(board, piece, adjX=0, adjY=0):
+    for x in range(TEMPLATEWIDTH):
+        for y in range(TEMPLATEHEIGHT):
+            isAboveBoard = y + piece['y'] + adjY < 0
+            if isAboveBoard or PIECES[piece['shape']][piece['rotation']][y][x] == BLANK:
+                continue
+            if not isOnBoard(x + piece['x']+adjX, y + piece['y'] + adjY):
+                return False
+            if board[x + piece['x']+adjX][y + piece['y'] + adjY] != BLANK:
+                return False
+    return True
+
+def isCompleteLine(board, y):
+    for x in range(BOARDWIDTH):
+        if board[x][y] == BLANK:
+            return False
+    return True
+
+def removeCompleteLines(board):
+    numLinesRemoved = 0
+    y = BOARDHEIGHT - 1
+
+    while y >= 0:
+        if isCompleteLine(board, y):
+            for pullDownY in range(y, 0, -1):
+                for x in range(BOARDWIDTH):
+                    board[x][pullDownY] = board[x][pullDownY-1]
+
+            for x in range(BOARDWIDTH):
+                board[x][0]=BLANK
+            numLinesRemoved += 1
+        else:
+            y = -1;
+    return numLinesRemoved
 
 def convertToPixelCoords(bx, by):
     return (XMARGIN + (bx * BOXSIZE)), (TOPMARGIN + (by * BOXSIZE))
@@ -186,6 +243,24 @@ def drawBoard(board):
     for x in range(BOARDWIDTH):
         for y in range(BOARDHEIGHT):
             drawBox(x, y, board[x][y])
+
+def drawPiece(piece, pixelx=None, pixely=None):
+    shapeToDraw = PIECES[piece['shape']][piece['rotation']]
+    if pixelx == None and pixely == None:
+        pixelx, pixely = convertToPixelCoords(piece['x'], piece['y'])
+
+    for x in range(TEMPLATEWIDTH):
+        for y in range(TEMPLATEHEIGHT):
+            if shapeToDraw[y][x] != BLANK:
+                drawBox(None, None, piece['color'], pixelx + (x*BOXSIZE), pixely + (y*BOXSIZE))
+
+def drawNextPiece(piece):
+    nextSurf = BASICFONT.render('Next:', True, TEXTCOLOR)
+    nextRect = nextSurf.get_rect()
+    nextRect.topleft = (WINDOWWIDTH - 120, 80)
+    DISPLAYSURF.blit(nextSurf, nextRect)
+    drawPiece(piece, pixelx=WINDOWWIDTH-120, pixely=100)
+
 
 def makeTextObjs(text, font, color):
   surf = font.render(text, True, color)
@@ -227,8 +302,18 @@ def showTextScreen(text):
 
 def runGame():
     board = getBlankBoard()
+    lastMoveDownTime = time.time()
+    lastMoveSilewaysTime = time.time()
+    lastFallTime = time.time()
+    movingDown = False
+    movingLeft = False
+    movingRight = False
     score = 0
-    level = 0
+    level, fallFreq = calculateLevelAndFallFreq(score)
+
+    fallingPiece = getNewPiece()
+    nextPiece = getNewPiece()
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -243,7 +328,9 @@ def runGame():
         DISPLAYSURF.fill(BGCOLOR)
         drawBoard(board)
         drawStatus(score, level)
-
+        drawNextPiece(nextPiece)
+        if fallingPiece != None:
+            drawPiece(fallingPiece)
         pygame.display.update()
 
 def main():
