@@ -7,3 +7,4 @@ add find.py at 20170607
 add regular_expression at 20170717
 add weather.py at 20170718
 add words_statistics.py at 20170719
+add medal.py at 20170722
