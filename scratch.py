@@ -35,6 +35,7 @@ def get_imgs(single_url):
 
 class Producter(threading.Thread):
     def run(self):
+        #解析网页获取图片链接
         print('%s is running' % threading.current_thread)
         #print(len(url_list))
         while len(url_list) > 0:
@@ -46,6 +47,7 @@ class Producter(threading.Thread):
 
 class Consumer(threading.Thread):
     def run(self):
+        #将图片保存到本地
         print('%s is running' % threading.current_thread)
         global img_finished
         while True:
