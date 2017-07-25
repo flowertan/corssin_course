@@ -8,3 +8,4 @@ add regular_expression at 20170717
 add weather.py at 20170718
 add words_statistics.py at 20170719
 add medal.py at 20170722
+add scratch.py at 20170724
