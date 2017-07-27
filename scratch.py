@@ -73,7 +73,6 @@ class Consumer(threading.Thread):
 
 ##comment-3497661 > div > div > div.text > p > a:nth-child(1)
 ##comments > ol
-# #comment-3497661 > div > div > div.text > p > img:nth-child(3)
 def main():
     global start_page, end_page
     global url_list# 用来存放每一页的列表
