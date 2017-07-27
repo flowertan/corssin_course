@@ -10,3 +10,4 @@ add words_statistics.py at 20170719
 add medal.py at 20170722
 add scratch.py at 20170724
 add scratch.exe at 20170726
+add redPacket.py at 20170727
