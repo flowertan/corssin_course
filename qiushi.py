@@ -29,8 +29,8 @@ def load_html(url):
                 gender = '男'
             else:
                 gender = '女'
-        print(gender,age,funny_count,comment_count)
-        print(author[0].strip())
+        # print(gender,age,funny_count,comment_count)
+        # print(author[0].strip())
         # print(author)
         # print(content)
         head = author[0].strip() + ' gender' + gender + ' age' + age + '\t好笑数' + funny_count[0] + '\t评论数' + comment_count[0]
