@@ -13,3 +13,4 @@ add scratch.exe at 20170726
 add redPacket.py at 20170727
 add qiushi.py at 20170806
 add down_pic.py at 20170806
+add zhihu.py at 20170813
