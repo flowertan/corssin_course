@@ -16,3 +16,4 @@ add down_pic.py at 20170806
 add zhihu.py at 20170813
 add jinri.py at 20170814
 commit douban.py at 20170819
+add music.py at 20170819
