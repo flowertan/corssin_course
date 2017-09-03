@@ -164,9 +164,10 @@ def main():
 
     get_cinema_info(city_id)
     for info in cinemalist:
-        t = threading.Thread(target=get_detail, args=(info['link'], movie_id, date_time, city_id, info['name']))
-        t.start()
-    t.join()
+        get_detail(info['link'], movie_id, date_time, city_id, info['name'])
+        # t = threading.Thread(target=get_detail, args=(info['link'], movie_id, date_time, city_id, info['name']))
+        # t.start()
+    # t.join()
     print(result)
     save()
 
