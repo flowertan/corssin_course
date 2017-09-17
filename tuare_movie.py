@@ -4,7 +4,7 @@
 # @Version : 1.0
 # @Time    : 2017/9/17 12:38
 # @file    : tuare_movie.py
-# @desc    : 通过tushare获取当日top3电影，绘制电影票房走势
+# @desc    : 通过tushare获取当月top3电影，绘制近7日电影票房走势
 #
 
 import tushare as ts
