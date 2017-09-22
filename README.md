@@ -6,3 +6,4 @@
 #### 20170916 tushare库获取股票信息(Tushare_two.ipynb)
 #### 20170917 tushare获取当月票房top3近7日票房走势，matplot库的使用
 #### 20170921 tushare获取GDP
+#### 20170922 numpy库练习
