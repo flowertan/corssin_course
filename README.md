@@ -18,3 +18,5 @@
 ## commit douban.py at 20170819
 ## add music.py at 20170819
 ## commit taonvl.py at 20170828
+## 20190824--爬虫小组学习day1爬虫初体验
+
